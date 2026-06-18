@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Capture — the room is a person</title>
+<meta name="description" content="One room, narrated aloud. 94 objects, 13 vibe-families, and the semantic threads between them. The room is a person. Captured 2026-06-17 from Star Heart Studios.">
+<meta property="og:title" content="Vibe Capture — the room is a person">
+<meta property="og:description" content="Every object is a token; the room is the network. A vibe, read back.">
+<meta property="og:image" content="https://vibecapture.quintessence.love/assets/vibecapture-hero.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#050608;--void2:#0a0d11;--ink:#0e1318;
+    --gold:#c9a24b;--gold-bright:#e6c477;--gold-deep:#998050;--gold-leaf:#d8b973;
+    --bone:#efe8de;--mute:#9a9388;--line:rgba(201,162,75,.18);
+    --serif:"Cormorant Garamond",Georgia,serif;--sans:"Inter",-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--void);color:var(--bone);font-family:var(--sans);font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:rgba(201,162,75,.25);color:var(--gold-bright)}
+  a{color:var(--gold-leaf);text-decoration:none}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 28px}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+  .hero{position:relative;min-height:94vh;min-height:94svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+  .hero-img{position:absolute;inset:0;background:url('assets/vibecapture-hero.png') center/contain no-repeat;opacity:.95}
+  .hero-veil{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 46%,rgba(5,6,8,0) 0%,rgba(5,6,8,.4) 60%,rgba(5,6,8,.95) 100%)}
+  .hero-inner{position:relative;z-index:2;padding:0 24px;opacity:0;transform:translateY(14px);animation:rise 1.5s .3s cubic-bezier(.2,.7,.2,1) forwards}
+  .kicker{font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
+  .hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(38px,8vw,76px);line-height:1.04;color:var(--bone)}
+  .hero h1 em{font-style:italic;color:var(--gold-bright)}
+  .hero-sub{margin-top:24px;font-size:clamp(14px,2.3vw,18px);color:var(--mute)}
+  @keyframes rise{to{opacity:1;transform:none}}
+
+  section{padding:88px 0;position:relative}
+  .eyebrow{font-size:11px;letter-spacing:.36em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;font-weight:500}
+  h2{font-family:var(--serif);font-weight:500;font-size:clamp(28px,5vw,44px);line-height:1.1;color:var(--bone);margin-bottom:20px}
+  h2 em{font-style:italic;color:var(--gold-bright)}
+  .lead{font-size:clamp(16px,2.4vw,20px);color:#cfc6b8;max-width:720px}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);max-width:1040px;margin:0 auto}
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  .stats{display:flex;gap:34px;flex-wrap:wrap;margin-top:30px}
+  .stat .n{font-family:var(--serif);font-size:46px;color:var(--gold-bright);line-height:1}
+  .stat .l{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);margin-top:4px}
+
+  /* filter bar */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin:30px 0 22px}
+  .fbtn{font-family:var(--sans);font-size:12.5px;color:var(--mute);background:transparent;border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .18s}
+  .fbtn:hover{color:var(--bone)}
+  .fbtn.on{color:var(--void);background:var(--gold-leaf);border-color:var(--gold-leaf);font-weight:500}
+  .fbtn .dot{width:8px;height:8px;border-radius:50%}
+  .count{font-size:12px;color:var(--mute);margin-bottom:14px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:12px}
+  .item{border:1px solid var(--line);border-left-width:3px;border-radius:0 12px 12px 0;padding:14px 16px;background:rgba(255,255,255,.012);transition:transform .2s,background .2s;opacity:1}
+  .item:hover{background:rgba(201,162,75,.05);transform:translateY(-2px)}
+  .item.hide{display:none}
+  .item .iname{font-size:14.5px;color:var(--bone);font-weight:400}
+  .item .istory{font-size:12.5px;color:var(--mute);margin-top:3px;line-height:1.5}
+  .item .ifam{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;margin-top:8px}
+
+  /* resonances */
+  .res{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:36px}
+  .rcard{border:1px solid var(--line);border-radius:14px;padding:24px;background:linear-gradient(180deg,rgba(201,162,75,.04),rgba(201,162,75,0))}
+  .rcard .chain{font-family:var(--serif);font-size:18px;color:var(--gold-bright);margin-bottom:10px;line-height:1.3}
+  .rcard p{font-size:13.5px;color:var(--mute)}
+
+  /* room reveal */
+  .room{margin-top:36px;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--ink)}
+  .room img{width:100%;display:block}
+  .room .rc{padding:26px 28px}
+  .room .rc h3{font-family:var(--serif);font-size:26px;color:var(--bone);margin-bottom:8px}
+  .room .rc p{font-size:14.5px;color:var(--mute);max-width:680px}
+
+  /* gift shop */
+  .shop{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:36px}
+  .sku{border:1px solid var(--line);border-radius:14px;padding:22px;background:rgba(255,255,255,.012);transition:border-color .2s}
+  .sku:hover{border-color:rgba(201,162,75,.4)}
+  .sku .flag{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+  .sku h3{font-family:var(--serif);font-size:21px;color:var(--bone);margin-bottom:6px}
+  .sku p{font-size:13px;color:var(--mute)}
+  .sku .price{margin-top:12px;font-size:12.5px;color:var(--gold-leaf)}
+
+  .close{text-align:center;padding:110px 0 50px}
+  .close .vow{font-family:var(--serif);font-style:italic;font-size:clamp(22px,4vw,32px);color:var(--bone);max-width:760px;margin:0 auto;line-height:1.4}
+  footer{padding:46px 0 60px;text-align:center;border-top:1px solid var(--line)}
+  footer .seal{font-family:var(--serif);font-size:18px;color:var(--gold)}
+  footer .meta{font-size:12px;color:var(--mute);margin-top:12px;line-height:1.9}
+
+  @media(max-width:640px){.hero-img{background-size:cover}section{padding:64px 0}}
+</style>
+</head>
+<body>
+<h1 class="sr-only">Vibe Capture — one room narrated aloud, 94 objects and the semantic threads between them. The room is a person.</h1>
+
+<header class="hero">
+  <div class="hero-img" aria-hidden="true"></div>
+  <div class="hero-veil" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="kicker">Vibe Capture</div>
+    <h1>The room is<br><em>a person</em></h1>
+    <div class="hero-sub">One room, narrated aloud. Every object a token.<br>The semantic threads between them, drawn.</div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap reveal">
+    <div class="eyebrow">What this is</div>
+    <h2>Star walked his room and named <em>everything</em>.</h2>
+    <p class="lead">On the night of 2026-06-17, from Star Heart Studios in Barton Hills, Star gave a spoken tour of his casita — the altar, the desk, the bathroom, the closet, the shelf of perfumes and supplements. Vibe Capture listened, and read the vibe back: 94 objects, 13 families, and the surprising threads that make them <em>one held intention</em>. The semantic distance between every token — his Hunch and ConceptNet instinct, turned on a single room.</p>
+    <div class="stats">
+      <div class="stat"><div class="n">94</div><div class="l">objects named</div></div>
+      <div class="stat"><div class="n">13</div><div class="l">vibe-families</div></div>
+      <div class="stat"><div class="n">1</div><div class="l">held tension</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section>
+  <div class="wrap reveal">
+    <div class="eyebrow">The inventory · filter by vibe</div>
+    <h2>Every object, every thread</h2>
+    <p class="lead">Tap a family to isolate it. Each object carries its story — and the person who gave it, where Star named one.</p>
+    <div class="filters" id="filters"></div>
+    <div class="count" id="count"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section>
+  <div class="wrap reveal">
+    <div class="eyebrow">The interesting signal</div>
+    <h2>The threads between <em>unlike things</em></h2>
+    <p class="lead">The obvious neighbors sit inside a family (all the perfumes; all the supplements). The real signal is the cross-family resonance — objects that look unrelated but rhyme at the level of meaning. These are the edges that make a room a self.</p>
+    <div class="res" id="res"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section>
+  <div class="wrap reveal">
+    <div class="eyebrow">The thesis</div>
+    <h2>Body geometry, made visible</h2>
+    <p class="lead">This room is an operating system you can stand inside — a monk's cleared cell that keeps <em>detonating</em> into gold, play, and saturated devotion, and refuses to choose between the two. A radial altar of every wisdom-lineage at one master point, ringed by the machinery to act on them: biohacking devices, a neuro-pharmacopeia, scents that change state in a breath — all on a warm rose-and-sheepskin ground that gives each sacred object its acreage of negative space. Lakshmi shares an altar with a Bitcoin sign; a Daft-Punk light-helmet is a crown; a giant Silly Goose guards a shrine. The sacred installed into the ordinary and amused by it. <em>This is what a self looks like when you externalize it: a room that is a person, made of vibration you can pick up and hold.</em></p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section>
+  <div class="wrap reveal">
+    <div class="eyebrow">A game</div>
+    <h2>Here's what I imagine your room looks like</h2>
+    <p class="lead">Generated only from your words — the dusty-rose walls, the amethyst altar on the round rug, the reclining chairs, the lattice lamp, the Silly Goose, the orange coin. Send a photo and we'll see how close the vibe landed.</p>
+    <div class="room">
+      <img src="assets/room-vibe.png" alt="An imagined render of Star's casita: dusty-rose walls, a glowing amethyst altar on a round rug, reclining chairs, a perforated lamp throwing lattice light, a large plush goose, an orange coin.">
+      <div class="rc"><h3>The casita, from the transcript</h3><p>Warm sub-2700K light, a HYBYCOZO lattice on the wall, the altar glowing at the center of the round sheepskin — the austere-mystic ⟷ ecstatic-adept tension, made domestic. Imagined by the same eye that built the rest of tonight.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section>
+  <div class="wrap reveal">
+    <div class="eyebrow">The gift shop</div>
+    <h2>Your tools, offered as <em>sacred exchange</em></h2>
+    <p class="lead">The objects where you are the maker or curator — the "perfect tools and technologies that can be part of an operating system." Giving is receiving, so each is priced as a gift that sustains the giving. (A catalog for now; the checkout is yours to open.)</p>
+    <div class="shop" id="shop"></div>
+  </div>
+</section>
+
+<div class="close wrap reveal">
+  <p class="vow">Every object is a token.<br>The room is the network.<br>And the network, it turns out, was always you.</p>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="seal">Aum · 🕉️ · le po</div>
+    <div class="meta">
+      Vibe Capture — captured 2026-06-17, Star Heart Studios, Austin.<br>
+      A Star OS sister-project. Read through the Eye: lead with beauty, arrive at precision.
+    </div>
+  </div>
+</footer>
+
+<script>
+const FAM={
+  altar:{label:'altar / devotional',c:'#d8b973'},
+  body:{label:'body-tech & biohacking',c:'#41777d'},
+  scent:{label:'scent & alchemy',c:'#c6b7c3'},
+  neuro:{label:'supplements & neuro',c:'#ef9f27'},
+  totems:{label:'totems & gifts',c:'#a88261'},
+  play:{label:'play & humor',c:'#dd7c39'},
+  sound:{label:'sound & instrument',c:'#7f77dd'},
+  money:{label:'money & sovereignty',c:'#ffca00'},
+  spells:{label:'spells & words',c:'#efe8de'},
+  light:{label:'light',c:'#e6c477'},
+  ground:{label:'field, ground & rest',c:'#b39c84'},
+  style:{label:'style / the crown',c:'#ab256e'},
+  inquiry:{label:'inquiry',c:'#679bd6'}
+};
+const ITEMS=[
+ ['Law of One pyramid','altar','the cosmology he lives in'],
+ ['Buddha picture','altar','the seated awakened one'],
+ ['Byron Katie','inquiry','The Work — question the thought'],
+ ['Silver coin from the Ganges','totems','Barry Silver, Kumbh Mela'],
+ ['Seashell','altar','water, surrender'],
+ ['Gold Vishnu & consort','altar','the preserver + the divine feminine'],
+ ['Amma, hands over heart','altar','the hugging saint; bhakti'],
+ ['Two playful Ganeshas','play','remover of obstacles, amused'],
+ ['Carved amethyst in gold (Chokurei)','altar','the Reiki power symbol — altar’s center'],
+ ['Horizontal selenite','altar','cleansing, charging the stones'],
+ ['Lakshmi','money','abundance, the divine feminine of wealth'],
+ ['Grandfather’s totem','totems','from his late grandfather'],
+ ['Dr. Usui','altar','founder of Reiki — the lineage'],
+ ['Two elephants around a palm','totems','with Naomi More'],
+ ['Reiki crystal pendant pillar','altar','the current made vertical'],
+ ['Grapes','play','the offering, Dionysian sweetness'],
+ ['“Magic” box','totems','Betty Kendrick — In Pursuit of Magic'],
+ ['Krishna','altar','the flute-player, divine play'],
+ ['Nataraja','sound','Shiva the cosmic dancer — “the one who moves”'],
+ ['Krishna & Radha','altar','sacred eros, bhakti union'],
+ ['Bitcoin sign (orange)','money','sound money, sovereignty'],
+ ['Pink-panther / blush wallpaper','play','the dusty-rose register'],
+ ['Dusty-rose walls','ground','rinsed-dawn made domestic'],
+ ['Orange matte leather pad','body','the work surface — the orange through-line'],
+ ['Standing desk (kept low)','body','work, but seated — the body served'],
+ ['Phone','body','the signal device'],
+ ['Two reclining chairs (one massage)','body','rest, the descent'],
+ ['Terahertz foot massager','body','vibration at the feet; inductive recharge'],
+ ['Standard foot massager','body','Olivia Steel’s idea'],
+ ['Peptides fridge','neuro','peptides for him, drinks for guests'],
+ ['“Miracle Eureka” spell','spells','the struck word as image'],
+ ['Wall-E mechanical duck','play','records + repeats — the echo, the mirror'],
+ ['doTERRA wall','scent','he’s a distributor (via Julie Brown)'],
+ ['Pull-up bar','body','body buffing; the morning stretch'],
+ ['Red-light-therapy helmet','body','photobiomodulation — the crown of light'],
+ ['Amma on the cupboard','altar','the saint follows him into the bath'],
+ ['“Slow is smooth, smooth is fast” spell','spells','Marathon Mode wisdom'],
+ ['1970s HEAD magazine','play','the humor note; counterculture artifact'],
+ ['Eucalyptus in the shower','scent','scent + the sacrament of bathing'],
+ ['Closet of drawers','totems','built with Angel Merrick'],
+ ['Spell sticks','spells','the word made burnable'],
+ ['Vibe tapes','sound','captured vibration — proto-Vibe-Capture'],
+ ['Yadom / ty inhaler gifts','scent','scent as a quick state-shift; gifts'],
+ ['Sacraments','neuro','the agnostic-intervention pharmacopeia'],
+ ['Stickers','play','play, identity marks'],
+ ['Extra clothes','style','the mystic-performer’s costumes'],
+ ['Wall of hats','style','the hat-as-crown — Gate of Heaven on the skull'],
+ ['Beaded leopard crossbody','style','Danny Gonzalez — amora.mx'],
+ ['Small harp','sound','from Oroville'],
+ ['Abby the aubergine (hand pan)','sound','Celtic D minor — the named, beloved object'],
+ ['Plants','ground','greenery dissolving the walls; the light cycle'],
+ ['Amy Chan birthday portrait (2018)','totems','“Amy Doodles” — “all vibes welcome”, “surrender”, “thanks for seeing me”'],
+ ['Frog totem','play','transformation, the threshold animal'],
+ ['The Four Agreements','inquiry','energetic hygiene for the mind'],
+ ['Jamungbolt mezcal','play','the Dionysian / hospitality note'],
+ ['Chicago (Aztec Goldenroot)','scent','scent as identity'],
+ ['Byredo Vanille Antique','scent','a fragrance'],
+ ['Baccarat Rouge 540','scent','the signature-aura register'],
+ ['RevitaLash','body','the adorned body'],
+ ['Fexofenadine','neuro','allergy (Austin)'],
+ ['B-propolis immune spray','neuro','the bee/propolis line'],
+ ['Symbiotica B12 + B6','neuro','energy / methylation'],
+ ['Omorovicza Queen of Hungary Mist','scent','Budapest — running low, wants a reorder'],
+ ['Heritage Store rose water','scent','the rinsed-dawn rose'],
+ ['Peach essential oil','scent','to flavor snuff'],
+ ['Byredo Rose of No Man’s Land','scent','the rose, again'],
+ ['Dopa+ (Pure Pharma)','neuro','dopamine support — the refill thesis, literal'],
+ ['Colloidal silver','neuro','immune / antimicrobial'],
+ ['Kirkland Aller-Flo','neuro','allergy nasal steroid'],
+ ['Bausch & Lomb eye relief','neuro','the eye — a measurement site'],
+ ['doTERRA wild orange','scent','distributor; the orange through-line'],
+ ['Valacyclovir','neuro','body maintenance'],
+ ['Kirkland organic multivitamin','neuro','side-quest: how is it “organic”?'],
+ ['B-complex','neuro','energy / nerves'],
+ ['Qunol turmeric + ginger gummies','neuro','side-quest: adaptogens'],
+ ['GlyNAC','neuro','glutathione precursors — side-quest'],
+ ['Advil','neuro','the descent — pain after the peak'],
+ ['Ketamine + oxytocin nasal spray','neuro','Dr. Calvo / Partell, Las Vegas'],
+ ['Symbiotica longevity mushrooms','neuro','the fungal / adaptogen line'],
+ ['Orange yardstick','money','measurement + the orange through-line'],
+ ['3D-printed orange Bowie trash can','play','“take out the trash” made glam — his own print'],
+ ['3D-printed grey Einstein','inquiry','precision welded to mysticism — his own print'],
+ ['HYBYCOZO filigree lamp','light','Ukrainian maker, Mayan Warrior — light-as-geometry'],
+ ['Block Clock (BTC ≈ $64,240)','money','the exact figure on screen'],
+ ['AirPods Max','sound','the chosen sonic field'],
+ ['LED fixtures (swapped)','light','the old ones flickered — or his perception rose past Nyquist'],
+ ['Six-foot circular sheepskin rug','ground','Overland, Santa Fe — the soft warm ground'],
+ ['Three pillows','ground','rest, the floor plane'],
+ ['Giant stuffed goose (“Silly Goose”)','play','pure play; the wink that keeps it from curdling'],
+ ['Trampoline','body','the morning bounce — the 2-minute body-buff'],
+ ['Stripper pole on the pull-up bar','body','for stretching'],
+ ['Copper tongue scraper','body','the 2-minute body-buff'],
+ ['Autobrush 3D toothbrush','body','the 2-minute body-buff'],
+ ['Nasal rinse','body','the 2-minute body-buff']
+];
+const RES=[
+ ['Terahertz feet ↔ Nataraja ↔ Tesla','The device vibrates the soles; the bronze god is “the one who moves”; Tesla says everything is frequency. The biohack and the deity are the same claim at two bandwidths.'],
+ ['The Bowie bin ↔ “take out the trash” ↔ git commit','His core agent-hygiene metaphor, 3D-printed as an object and glammed with Bowie. The mundane chore made myth, and made art, by his own hand.'],
+ ['The owl ↔ the Wall-E duck ↔ AirPods ↔ the vibe tapes','The watcher who listens and repeats the stars’ song recurs as the recording duck, the listening headphones, the tapes that hold a vibe. The whole room is wired for capture and echo — which is what Vibe Capture is.'],
+ ['Advil ↔ the descent ↔ Zarathustra','The painkiller is the body’s footnote to the light/dark-cycle thesis: every summit has a treacherous descent. Advil is shadow-work for the body.'],
+ ['Ketamine+oxytocin ↔ Amma’s hug ↔ Radha-Krishna ↔ Bailey','Oxytocin is the bonding molecule; Amma is the hug; Radha-Krishna is sacred union; Bailey “puts him in the light.” The pharmacy and the altar both dose connection — love as a refillable state.'],
+ ['Lakshmi ↔ the Bitcoin sign ↔ the Block Clock ↔ doTERRA','Abundance-goddess and sound-money share an altar; the Block Clock is the exact figure on screen; doTERRA is energy-exchange he already runs. Sovereignty is devotion with a price feed.'],
+ ['HYBYCOZO ↔ the Law of One pyramid ↔ Einstein','A perforated polyhedron throwing light-as-geometry, a pyramid of cosmology, a printed Einstein: precision welded to mysticism, one chord — the math made beautiful and load-bearing.'],
+ ['GlyNAC / mushrooms / turmeric ↔ the Krebs cycle ↔ integration','The glutathione precursors and adaptogens are the body’s version of his photosynthesis metaphor — gather the light, fix it to sugar, then run the night-process of clearing. The supplement shelf is the dark cycle, in capsule form.'],
+ ['The RLT helmet ↔ the wall of hats ↔ the crown','A Daft-Punk helmet of light and a shelf of hats-as-crowns are the same symbol — the Gate of Heaven worn on the skull. Biohacking is regalia.'],
+ ['The orange yardstick ↔ the Block Clock ↔ the 0–100 sine wave','Two literal measuring instruments on the shelf, beside a man whose whole thesis is measuring where you are and plotting it over time. The room is already instrumented; Star OS just reads the dials.']
+];
+const SHOP=[
+ ['flagship','The 2-minute Body-Buff OS','Trampoline + pole-stretch + copper tongue scraper + Autobrush + nasal rinse — the fast morning protocol he proved works in two minutes. Star OS for the body.','priced as a starter kit'],
+ ['his own print','Orange Bowie trash can','“Take out the trash” made glam — his own 3D print. A signature object.','limited run'],
+ ['his own print','Grey Einstein desk totem','Precision welded to mysticism, E=mc² as a paperweight.','limited run'],
+ ['words','Spell-word objects','“Miracle Eureka,” “Slow is smooth, smooth is fast,” the Four-Agreements card — serious modern objects, not Etsy tarot.','made to order'],
+ ['sound','Vibe tapes','Captured-vibration cassettes — the literal Vibe Capture product as merch.','small batch'],
+ ['regalia','The hat-as-crown line','Fedoras + a soft cap with woven intention bands. Sovereignty without armor.','by commission'],
+ ['sound','Named instruments','Abby-the-aubergine hand pans and the small harp — the singing-object line, the owl who sings.','by commission'],
+ ['channel','The doTERRA line','A ready-made energy-exchange channel he already runs (via Julie Brown) — folded into the shop.','active'],
+ ['altar','Curated altar kit','A starter radial-altar set — Reiki amethyst, selenite, the playful Ganeshas — composed to his eye.','by commission']
+];
+
+// build filters
+const fwrap=document.getElementById('filters');
+let active='all';
+const allBtn=document.createElement('button');
+allBtn.className='fbtn on';allBtn.textContent='all 94';allBtn.dataset.f='all';
+fwrap.appendChild(allBtn);
+Object.entries(FAM).forEach(([k,v])=>{
+  const b=document.createElement('button');
+  b.className='fbtn';b.dataset.f=k;
+  b.innerHTML=`<span class="dot" style="background:${v.c}"></span>${v.label}`;
+  fwrap.appendChild(b);
+});
+// build grid
+const grid=document.getElementById('grid');
+ITEMS.forEach(([n,f,s])=>{
+  const d=document.createElement('div');
+  d.className='item';d.dataset.f=f;d.style.borderLeftColor=FAM[f].c;
+  d.innerHTML=`<div class="iname">${n}</div><div class="istory">${s}</div><div class="ifam" style="color:${FAM[f].c}">${FAM[f].label}</div>`;
+  grid.appendChild(d);
+});
+const countEl=document.getElementById('count');
+function applyFilter(f){
+  active=f;let shown=0;
+  document.querySelectorAll('.item').forEach(it=>{
+    const ok=(f==='all'||it.dataset.f===f);
+    it.classList.toggle('hide',!ok); if(ok)shown++;
+  });
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.toggle('on',b.dataset.f===f));
+  countEl.textContent=(f==='all')?`showing all ${shown} objects`:`${shown} object${shown===1?'':'s'} in ${FAM[f].label}`;
+}
+fwrap.addEventListener('click',e=>{const b=e.target.closest('.fbtn');if(b)applyFilter(b.dataset.f);});
+applyFilter('all');
+
+// resonances
+const resEl=document.getElementById('res');
+RES.forEach(([chain,p])=>{const d=document.createElement('div');d.className='rcard';d.innerHTML=`<div class="chain">${chain}</div><p>${p}</p>`;resEl.appendChild(d);});
+// shop
+const shopEl=document.getElementById('shop');
+SHOP.forEach(([flag,h,p,price])=>{const d=document.createElement('div');d.className='sku';d.innerHTML=`<div class="flag">${flag}</div><h3>${h}</h3><p>${p}</p><div class="price">${price}</div>`;shopEl.appendChild(d);});
+// reveal
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
