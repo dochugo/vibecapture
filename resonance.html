@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Resonance Engine — Vibe Capture</title>
+<meta name="description" content="A force-directed constellation of one room: 94 objects as points of worked-gold light, drawn together by the semantic threads that make them one held intention. Every object is a token; the room is the network; the soul is legible.">
+<meta property="og:title" content="The Resonance Engine — Vibe Capture">
+<meta property="og:description" content="Every object is a token; the room is the network; the soul is legible.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#050608;--void2:#0a0d11;--ink:#0e1318;
+    --gold:#c9a24b;--gold-bright:#e6c477;--gold-deep:#998050;--gold-leaf:#d8b973;
+    --bone:#efe8de;--mute:#9a9388;--line:rgba(201,162,75,.18);
+    --serif:"Cormorant Garamond",Georgia,serif;--sans:"Inter",-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--void);color:var(--bone);font-family:var(--sans);font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:rgba(201,162,75,.25);color:var(--gold-bright)}
+  a{color:var(--gold-leaf);text-decoration:none;transition:color .2s}
+  a:hover{color:var(--gold-bright)}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+
+  /* ---- intro ---- */
+  .intro{position:relative;z-index:3;text-align:center;padding:46px 24px 8px;pointer-events:none}
+  .intro .inner{pointer-events:auto;display:inline-block}
+  .back{font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--mute);display:inline-flex;align-items:center;gap:8px;margin-bottom:26px}
+  .back:hover{color:var(--gold-leaf)}
+  .back .arrow{font-size:13px;transition:transform .2s}
+  .back:hover .arrow{transform:translateX(-3px)}
+  .kicker{font-size:11.5px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+  h1{font-family:var(--serif);font-weight:500;font-size:clamp(34px,6.4vw,62px);line-height:1.04;color:var(--bone)}
+  h1 em{font-style:italic;color:var(--gold-bright)}
+  .vow{margin-top:18px;font-family:var(--serif);font-style:italic;font-size:clamp(15px,2.6vw,21px);color:var(--mute);letter-spacing:.01em}
+  .vow .lit{color:var(--gold-leaf);font-style:italic}
+
+  /* ---- stage ---- */
+  .stage{position:relative;width:100%;height:74vh;height:74svh;min-height:480px;margin-top:6px}
+  canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y}
+  canvas:focus{outline:none}
+  canvas:focus-visible{outline:1px solid var(--line);outline-offset:-1px}
+
+  /* ---- hint ---- */
+  .hint{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);opacity:.7;pointer-events:none;text-align:center;transition:opacity .6s;padding:0 16px}
+  .hint.gone{opacity:0}
+
+  /* ---- detail panel ---- */
+  .panel{position:absolute;top:18px;right:18px;width:300px;max-width:calc(100% - 36px);border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,rgba(14,19,24,.92),rgba(5,6,8,.94));backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);padding:20px 22px;opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .35s cubic-bezier(.2,.7,.2,1),transform .35s cubic-bezier(.2,.7,.2,1);z-index:4}
+  .panel.show{opacity:1;transform:none;pointer-events:auto}
+  .panel .pfam{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:8px;margin-bottom:9px}
+  .panel .pfam .dot{width:8px;height:8px;border-radius:50%}
+  .panel h2{font-family:var(--serif);font-weight:500;font-size:23px;line-height:1.16;color:var(--bone);margin-bottom:7px}
+  .panel .pstory{font-size:13px;color:var(--mute);line-height:1.55}
+  .panel .pres{margin-top:15px;border-top:1px solid var(--line);padding-top:13px}
+  .panel .pres-h{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:9px}
+  .panel .rlink{display:block;font-family:var(--serif);font-size:14.5px;color:var(--gold-leaf);line-height:1.3;margin-bottom:9px;cursor:pointer;border:none;background:none;text-align:left;padding:0;width:100%;font-style:italic;transition:color .18s}
+  .panel .rlink:hover,.panel .rlink:focus-visible{color:var(--gold-bright);outline:none}
+  .panel .rlink:last-child{margin-bottom:0}
+  .panel .pmeaning{font-size:12.5px;color:#cfc6b8;line-height:1.5;margin:-3px 0 11px;padding-left:11px;border-left:1px solid var(--line)}
+  .panel .pclose{position:absolute;top:13px;right:15px;font-size:18px;line-height:1;color:var(--mute);background:none;border:none;cursor:pointer;padding:4px;transition:color .2s}
+  .panel .pclose:hover{color:var(--bone)}
+
+  /* ---- filter bar ---- */
+  .controls{position:relative;z-index:3;max-width:1040px;margin:0 auto;padding:22px 28px 8px}
+  .clabel{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--mute);margin-bottom:13px;text-align:center}
+  .filters{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
+  .fbtn{font-family:var(--sans);font-size:12px;color:var(--mute);background:transparent;border:1px solid var(--line);border-radius:999px;padding:6px 13px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .18s}
+  .fbtn:hover{color:var(--bone);border-color:rgba(201,162,75,.34)}
+  .fbtn:focus-visible{outline:1px solid var(--gold-leaf);outline-offset:2px}
+  .fbtn.on{color:var(--void);background:var(--gold-leaf);border-color:var(--gold-leaf);font-weight:500}
+  .fbtn.on .dot{box-shadow:0 0 0 1.5px rgba(5,6,8,.5)}
+  .fbtn .dot{width:8px;height:8px;border-radius:50%}
+
+  /* ---- legend strip / counts ---- */
+  .footnote{position:relative;z-index:3;text-align:center;font-size:12px;color:var(--mute);padding:18px 28px 0}
+  .footnote b{color:var(--gold-leaf);font-weight:400}
+
+  footer{position:relative;z-index:3;padding:54px 0 56px;margin-top:34px;text-align:center;border-top:1px solid var(--line)}
+  footer .seal{font-family:var(--serif);font-size:18px;color:var(--gold);letter-spacing:.04em}
+  footer .meta{font-size:12px;color:var(--mute);margin-top:12px;line-height:1.9}
+
+  @media(max-width:640px){
+    .intro{padding:30px 18px 4px}
+    .stage{height:62vh;height:62svh;min-height:400px}
+    .panel{top:auto;bottom:14px;right:14px;left:14px;width:auto;max-width:none}
+    .controls{padding:18px 16px 4px}
+  }
+</style>
+</head>
+<body>
+<a class="sr-only" href="#summary">Skip to the text summary of the constellation</a>
+
+<div class="intro">
+  <div class="inner">
+    <a class="back" href="index.html"><span class="arrow">←</span> Vibe Capture</a>
+    <div class="kicker">The Resonance Engine</div>
+    <h1>The room, as a <em>constellation</em></h1>
+    <p class="vow">every object is a token; the room is the network; <span class="lit">the soul is legible.</span></p>
+  </div>
+</div>
+
+<div class="stage">
+  <canvas id="sky" role="img" aria-label="An interactive force-directed constellation of 94 objects from Star's room, each a point of gold light colored by its vibe-family, joined by luminous threads where they resonate in meaning. A full text summary follows below."></canvas>
+  <div class="hint" id="hint">Hover a star — or tap. Drag to nudge. The gold threads are the resonances.</div>
+
+  <aside class="panel" id="panel" aria-live="polite">
+    <button class="pclose" id="pclose" aria-label="Close detail">×</button>
+    <div class="pfam"><span class="dot" id="pdot"></span><span id="pfam"></span></div>
+    <h2 id="pname"></h2>
+    <p class="pstory" id="pstory"></p>
+    <div class="pres" id="pres" hidden>
+      <div class="pres-h">Resonates with</div>
+      <div id="plist"></div>
+    </div>
+  </aside>
+</div>
+
+<div class="controls">
+  <div class="clabel">Isolate a vibe-family</div>
+  <div class="filters" id="filters"></div>
+</div>
+
+<div class="footnote">
+  <span id="counts"></span> · <b>14</b> cross-cluster resonances drawn as gold threads. Click a node to follow them.
+</div>
+
+<!-- Visually-hidden accessible summary -->
+<section id="summary" class="sr-only" aria-label="Text summary of the resonance constellation">
+  <h2>The Resonance Engine — full reading in text</h2>
+  <p>This is a constellation of 94 objects from the room of Star Heartsong, captured 2026-06-17 at Star Heart Studios in Austin. Each object is a node colored by one of 13 vibe-families. Fourteen cross-cluster resonances connect objects that look unrelated but rhyme in meaning. The resonances, in full:</p>
+  <ul id="summary-list"></ul>
+</section>
+
+<footer>
+  <div class="seal">Aum · 🕉️ · лепота</div>
+  <div class="meta">
+    Vibe Capture — the Resonance Engine. Captured 2026-06-17, Star Heart Studios, Austin.<br>
+    Read through the Eye: lead with beauty, arrive at precision. Every object is a token; the room is the network.
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   DATA — exact FAM colors + ITEMS from the existing site,
+   plus the 14 cross-cluster resonances encoded as edges.
+   ============================================================ */
+const FAM={
+  altar:{label:'altar / devotional',c:'#d8b973'},
+  body:{label:'body-tech & biohacking',c:'#41777d'},
+  scent:{label:'scent & alchemy',c:'#c6b7c3'},
+  neuro:{label:'supplements & neuro',c:'#ef9f27'},
+  totems:{label:'totems & gifts',c:'#a88261'},
+  play:{label:'play & humor',c:'#dd7c39'},
+  sound:{label:'sound & instrument',c:'#7f77dd'},
+  money:{label:'money & sovereignty',c:'#ffca00'},
+  spells:{label:'spells & words',c:'#efe8de'},
+  light:{label:'light',c:'#e6c477'},
+  ground:{label:'field, ground & rest',c:'#b39c84'},
+  style:{label:'style / the crown',c:'#ab256e'},
+  inquiry:{label:'inquiry',c:'#679bd6'}
+};
+const ITEMS=[
+ ['Law of One pyramid','altar','the cosmology he lives in'],
+ ['Buddha picture','altar','the seated awakened one'],
+ ['Byron Katie','inquiry','The Work — question the thought'],
+ ['Silver coin from the Ganges','totems','Barry Silver, Kumbh Mela'],
+ ['Seashell','altar','water, surrender'],
+ ['Gold Vishnu & consort','altar','the preserver + the divine feminine'],
+ ['Amma, hands over heart','altar','the hugging saint; bhakti'],
+ ['Two playful Ganeshas','play','remover of obstacles, amused'],
+ ['Carved amethyst in gold (Chokurei)','altar','the Reiki power symbol — altar’s center'],
+ ['Horizontal selenite','altar','cleansing, charging the stones'],
+ ['Lakshmi','money','abundance, the divine feminine of wealth'],
+ ['Grandfather’s totem','totems','from his late grandfather'],
+ ['Dr. Usui','altar','founder of Reiki — the lineage'],
+ ['Two elephants around a palm','totems','with Naomi More'],
+ ['Reiki crystal pendant pillar','altar','the current made vertical'],
+ ['Grapes','play','the offering, Dionysian sweetness'],
+ ['“Magic” box','totems','Betty Kendrick — In Pursuit of Magic'],
+ ['Krishna','altar','the flute-player, divine play'],
+ ['Nataraja','sound','Shiva the cosmic dancer — “the one who moves”'],
+ ['Krishna & Radha','altar','sacred eros, bhakti union'],
+ ['Bitcoin sign (orange)','money','sound money, sovereignty'],
+ ['Pink-panther / blush wallpaper','play','the dusty-rose register'],
+ ['Dusty-rose walls','ground','rinsed-dawn made domestic'],
+ ['Orange matte leather pad','body','the work surface — the orange through-line'],
+ ['Standing desk (kept low)','body','work, but seated — the body served'],
+ ['Phone','body','the signal device'],
+ ['Two reclining chairs (one massage)','body','rest, the descent'],
+ ['Terahertz foot massager','body','vibration at the feet; inductive recharge'],
+ ['Standard foot massager','body','Olivia Steel’s idea'],
+ ['Peptides fridge','neuro','peptides for him, drinks for guests'],
+ ['“Miracle Eureka” spell','spells','the struck word as image'],
+ ['Wall-E mechanical duck','play','records + repeats — the echo, the mirror'],
+ ['doTERRA wall','scent','he’s a distributor (via Julie Brown)'],
+ ['Pull-up bar','body','body buffing; the morning stretch'],
+ ['Red-light-therapy helmet','body','photobiomodulation — the crown of light'],
+ ['Amma on the cupboard','altar','the saint follows him into the bath'],
+ ['“Slow is smooth, smooth is fast” spell','spells','Marathon Mode wisdom'],
+ ['1970s HEAD magazine','play','the humor note; counterculture artifact'],
+ ['Eucalyptus in the shower','scent','scent + the sacrament of bathing'],
+ ['Closet of drawers','totems','built with Angel Merrick'],
+ ['Spell sticks','spells','the word made burnable'],
+ ['Vibe tapes','sound','captured vibration — proto-Vibe-Capture'],
+ ['Yadom / ty inhaler gifts','scent','scent as a quick state-shift; gifts'],
+ ['Sacraments','neuro','the agnostic-intervention pharmacopeia'],
+ ['Stickers','play','play, identity marks'],
+ ['Extra clothes','style','the mystic-performer’s costumes'],
+ ['Wall of hats','style','the hat-as-crown — Gate of Heaven on the skull'],
+ ['Beaded leopard crossbody','style','Danny Gonzalez — amora.mx'],
+ ['Small harp','sound','from Oroville'],
+ ['Abby the aubergine (hand pan)','sound','Celtic D minor — the named, beloved object'],
+ ['Plants','ground','greenery dissolving the walls; the light cycle'],
+ ['Amy Chan birthday portrait (2018)','totems','“Amy Doodles” — “all vibes welcome”, “thanks for seeing me”'],
+ ['Frog totem','play','transformation, the threshold animal'],
+ ['The Four Agreements','inquiry','energetic hygiene for the mind'],
+ ['Jamungbolt mezcal','play','the Dionysian / hospitality note'],
+ ['Chicago (Aztec Goldenroot)','scent','scent as identity'],
+ ['Byredo Vanille Antique','scent','a fragrance'],
+ ['Baccarat Rouge 540','scent','the signature-aura register'],
+ ['RevitaLash','body','the adorned body'],
+ ['Fexofenadine','neuro','allergy (Austin)'],
+ ['B-propolis immune spray','neuro','the bee/propolis line'],
+ ['Symbiotica B12 + B6','neuro','energy / methylation'],
+ ['Omorovicza Queen of Hungary Mist','scent','Budapest — running low, wants a reorder'],
+ ['Heritage Store rose water','scent','the rinsed-dawn rose'],
+ ['Peach essential oil','scent','to flavor snuff'],
+ ['Byredo Rose of No Man’s Land','scent','the rose, again'],
+ ['Dopa+ (Pure Pharma)','neuro','dopamine support — the refill thesis, literal'],
+ ['Colloidal silver','neuro','immune / antimicrobial'],
+ ['Kirkland Aller-Flo','neuro','allergy nasal steroid'],
+ ['Bausch & Lomb eye relief','neuro','the eye — a measurement site'],
+ ['doTERRA wild orange','scent','distributor; the orange through-line'],
+ ['Valacyclovir','neuro','body maintenance'],
+ ['Kirkland organic multivitamin','neuro','side-quest: how is it “organic”?'],
+ ['B-complex','neuro','energy / nerves'],
+ ['Qunol turmeric + ginger gummies','neuro','side-quest: adaptogens'],
+ ['GlyNAC','neuro','glutathione precursors — side-quest'],
+ ['Advil','neuro','the descent — pain after the peak'],
+ ['Ketamine + oxytocin nasal spray','neuro','Dr. Calvo / Partell, Las Vegas'],
+ ['Symbiotica longevity mushrooms','neuro','the fungal / adaptogen line'],
+ ['Orange yardstick','money','measurement + the orange through-line'],
+ ['3D-printed orange Bowie trash can','play','“take out the trash” made glam — his own print'],
+ ['3D-printed grey Einstein','inquiry','precision welded to mysticism — his own print'],
+ ['HYBYCOZO filigree lamp','light','Ukrainian maker, Mayan Warrior — light-as-geometry'],
+ ['Block Clock (BTC ≈ $64,240)','money','the exact figure on screen'],
+ ['AirPods Max','sound','the chosen sonic field'],
+ ['LED fixtures (swapped)','light','the old ones flickered — or his perception rose past Nyquist'],
+ ['Six-foot circular sheepskin rug','ground','Overland, Santa Fe — the soft warm ground'],
+ ['Three pillows','ground','rest, the floor plane'],
+ ['Giant stuffed goose (“Silly Goose”)','play','pure play; the wink that keeps it from curdling'],
+ ['Trampoline','body','the morning bounce — the 2-minute body-buff'],
+ ['Stripper pole on the pull-up bar','body','for stretching'],
+ ['Copper tongue scraper','body','the 2-minute body-buff'],
+ ['Autobrush 3D toothbrush','body','the 2-minute body-buff'],
+ ['Nasal rinse','body','the 2-minute body-buff']
+];
+const NAME2IDX={}; ITEMS.forEach((it,i)=>NAME2IDX[it[0]]=i);
+function idx(name){const i=NAME2IDX[name]; if(i===undefined)console.warn('resonance: no node',name); return i;}
+
+/* The 14 cross-cluster RESONANCES. Each: title, one-line meaning, and the
+   object-name members it threads together (every pair drawn as a gold edge). */
+const RES_DEF=[
+ {t:'Terahertz feet ↔ Nataraja ↔ Tesla',
+  m:'The biohack and the bronze god are the same claim at two bandwidths — the dancer’s frequency, applied to the sole.',
+  n:['Terahertz foot massager','Nataraja','Standard foot massager']},
+ {t:'The Bowie bin ↔ “take out the trash” ↔ git',
+  m:'His core agent-hygiene metaphor, 3D-printed and glammed with Bowie. The mundane chore made myth, and made art, by his own hand.',
+  n:['3D-printed orange Bowie trash can','3D-printed grey Einstein']},
+ {t:'The owl ↔ the duck ↔ AirPods ↔ the vibe tapes',
+  m:'The watcher who listens and repeats the stars’ song — the recording duck, the headphones, the tapes. The whole room is wired for capture and echo, which is Vibe Capture itself.',
+  n:['Wall-E mechanical duck','AirPods Max','Vibe tapes','Small harp']},
+ {t:'Advil ↔ the descent ↔ Zarathustra',
+  m:'The painkiller is the body’s footnote to the light/dark-cycle thesis: every summit has a treacherous descent. Advil is shadow-work for the body.',
+  n:['Advil','Two reclining chairs (one massage)']},
+ {t:'Ketamine+oxytocin ↔ Amma’s hug ↔ Radha-Krishna ↔ Bailey',
+  m:'Oxytocin is the bonding molecule; Amma is the hug; Radha-Krishna is sacred union. The pharmacy and the altar both dose connection — love as a refillable state.',
+  n:['Ketamine + oxytocin nasal spray','Amma, hands over heart','Krishna & Radha','Amma on the cupboard']},
+ {t:'Lakshmi ↔ the Bitcoin sign ↔ the Block Clock ↔ doTERRA',
+  m:'Abundance-goddess and sound-money share an altar; the Block Clock is the exact figure on screen; doTERRA is energy-exchange he already runs. Sovereignty is devotion with a price feed.',
+  n:['Lakshmi','Bitcoin sign (orange)','Block Clock (BTC ≈ $64,240)','doTERRA wall']},
+ {t:'HYBYCOZO ↔ the Law of One pyramid ↔ Einstein',
+  m:'A polyhedron throwing light-as-geometry, a pyramid of cosmology, a printed Einstein: precision welded to mysticism, one chord — the math made beautiful and load-bearing.',
+  n:['HYBYCOZO filigree lamp','Law of One pyramid','3D-printed grey Einstein']},
+ {t:'Eucalyptus ↔ the seashell ↔ Barton Springs',
+  m:'Scent-sacrament, the ocean shell, and the spring-fed swimming hole down the road: water and the mirror, running from the altar through the bath out to the landscape.',
+  n:['Eucalyptus in the shower','Seashell','Heritage Store rose water']},
+ {t:'The RLT helmet ↔ the wall of hats ↔ the crown',
+  m:'A Daft-Punk helmet of light and a shelf of hats-as-crowns are the same symbol — the Gate of Heaven worn on the skull. Biohacking is regalia.',
+  n:['Red-light-therapy helmet','Wall of hats']},
+ {t:'GlyNAC / mushrooms / turmeric ↔ the Krebs cycle',
+  m:'The glutathione precursors and adaptogens are the body’s version of his photosynthesis metaphor — the supplement shelf is the dark cycle, in capsule form.',
+  n:['GlyNAC','Symbiotica longevity mushrooms','Qunol turmeric + ginger gummies','Plants']},
+ {t:'The Four Agreements ↔ Byron Katie ↔ the interface',
+  m:'Energetic hygiene for the mind — don’t burn cycles on others’ signals, keep the stack clear, question the thought. The altar tokens are the UX spec for Star OS.',
+  n:['The Four Agreements','Byron Katie']},
+ {t:'Abby ↔ the playful Ganeshas ↔ the Silly Goose ↔ лепота',
+  m:'Naming the instrument, the playful gods, the giant plush: one move — holiness amused. The room refuses to be solemn; the wink is structural, not decorative.',
+  n:['Abby the aubergine (hand pan)','Two playful Ganeshas','Giant stuffed goose (“Silly Goose”)']},
+ {t:'The orange through-line',
+  m:'Not a cluster but a pigment vow running the whole room — one struck-bell accent carrying sovereignty, measurement, scent, and play at once.',
+  n:['Orange matte leather pad','Bitcoin sign (orange)','doTERRA wild orange','Orange yardstick','3D-printed orange Bowie trash can']},
+ {t:'The orange yardstick ↔ the Block Clock ↔ the 0–100 sine wave',
+  m:'Two literal measuring instruments on the shelf, beside a man whose whole thesis is measuring where you are and plotting it over time. The room is already instrumented; Star OS just reads the dials.',
+  n:['Orange yardstick','Block Clock (BTC ≈ $64,240)','Bausch & Lomb eye relief']}
+];
+
+/* Build node degree (how many resonances touch each) + edge list */
+const RES=RES_DEF.map((r,ri)=>({...r,members:r.n.map(idx).filter(v=>v!==undefined),ri}));
+const resDegree=new Array(ITEMS.length).fill(0);
+const resEdges=[]; // {a,b,ri}
+RES.forEach(r=>{
+  r.members.forEach(m=>resDegree[m]++);
+  for(let i=0;i<r.members.length;i++)for(let j=i+1;j<r.members.length;j++)
+    resEdges.push({a:r.members[i],b:r.members[j],ri:r.ri});
+});
+/* node -> resonance indices it belongs to */
+const nodeRes=ITEMS.map(()=>[]);
+RES.forEach(r=>r.members.forEach(m=>{if(!nodeRes[m].includes(r.ri))nodeRes[m].push(r.ri);}));
+
+/* faint within-family links: chain each family's members in inventory order */
+const famLinks=[];
+const byFam={};
+ITEMS.forEach((it,i)=>{(byFam[it[1]]=byFam[it[1]]||[]).push(i);});
+Object.values(byFam).forEach(arr=>{for(let i=0;i<arr.length-1;i++)famLinks.push([arr[i],arr[i+1]]);});
+
+/* ============================================================
+   FORCE LAYOUT — hand-rolled on canvas. Smooth, gold-on-void.
+   ============================================================ */
+const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const cv=document.getElementById('sky'); const ctx=cv.getContext('2d');
+let W=0,H=0,DPR=1;
+const nodes=ITEMS.map((it,i)=>{
+  const a=(i/ITEMS.length)*Math.PI*2, r=80+ (i%7)*22;
+  return {i,name:it[0],fam:it[1],story:it[2],
+    x:Math.cos(a)*r,y:Math.sin(a)*r,vx:0,vy:0,
+    deg:resDegree[i], radius:0, glow:0, // glow: highlight 0..1
+  };
+});
+nodes.forEach(n=>{ n.radius = 2.6 + Math.min(n.deg,4)*0.95; }); // gentle size by resonance-degree
+
+let activeFam='all';
+let hoverNode=null, selNode=null;
+let drag=null, dragMoved=false;
+
+function resize(){
+  const rect=cv.getBoundingClientRect();
+  DPR=Math.min(window.devicePixelRatio||1,2);
+  W=rect.width; H=rect.height;
+  cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+window.addEventListener('resize',()=>{resize();});
+resize();
+
+/* ---- simulation step ---- */
+let alpha=1; // cooling
+function center(){return {x:W/2,y:H*0.5};}
+function step(){
+  const c=center();
+  const repel = 760;       // node-node repulsion
+  const linkLen = 96;      // resonance ideal length
+  const linkK = 0.022;     // resonance spring
+  const famK = 0.004;      // faint family spring
+  const gravity = 0.012;   // pull to center
+  const N=nodes.length;
+
+  // repulsion (O(n^2) — n=94, trivial)
+  for(let i=0;i<N;i++){
+    const a=nodes[i];
+    for(let j=i+1;j<N;j++){
+      const b=nodes[j];
+      let dx=a.x-b.x, dy=a.y-b.y; let d2=dx*dx+dy*dy;
+      if(d2<0.01){dx=(Math.random()-.5);dy=(Math.random()-.5);d2=dx*dx+dy*dy+0.01;}
+      const d=Math.sqrt(d2);
+      const f=repel/d2;
+      const fx=(dx/d)*f, fy=(dy/d)*f;
+      a.vx+=fx*alpha; a.vy+=fy*alpha; b.vx-=fx*alpha; b.vy-=fy*alpha;
+    }
+  }
+  // family springs (faint)
+  famLinks.forEach(([ai,bi])=>{
+    const a=nodes[ai],b=nodes[bi];
+    let dx=b.x-a.x, dy=b.y-a.y; const d=Math.hypot(dx,dy)||0.001;
+    const f=(d-linkLen*1.5)*famK;
+    const fx=(dx/d)*f, fy=(dy/d)*f;
+    a.vx+=fx*alpha; a.vy+=fy*alpha; b.vx-=fx*alpha; b.vy-=fy*alpha;
+  });
+  // resonance springs (strong — pull the rhyming objects together)
+  resEdges.forEach(e=>{
+    const a=nodes[e.a],b=nodes[e.b];
+    let dx=b.x-a.x, dy=b.y-a.y; const d=Math.hypot(dx,dy)||0.001;
+    const f=(d-linkLen)*linkK;
+    const fx=(dx/d)*f, fy=(dy/d)*f;
+    a.vx+=fx*alpha; a.vy+=fy*alpha; b.vx-=fx*alpha; b.vy-=fy*alpha;
+  });
+  // gravity + integrate
+  for(let i=0;i<N;i++){
+    const n=nodes[i];
+    n.vx+=(c.x-n.x)*gravity*alpha; n.vy+=(c.y-n.y)*gravity*alpha;
+    if(drag===n){ n.x=drag.tx; n.y=drag.ty; n.vx=0; n.vy=0; continue; }
+    n.vx*=0.86; n.vy*=0.86;
+    n.x+=n.vx; n.y+=n.vy;
+    // soft bounds
+    const pad=26;
+    n.x=Math.max(pad,Math.min(W-pad,n.x));
+    n.y=Math.max(pad,Math.min(H-pad,n.y));
+  }
+  alpha=Math.max(alpha*0.992,0.04); // never fully freeze → gentle live drift
+}
+
+/* ---- highlight set ---- */
+function activeSetFor(node){
+  // returns {nodeSet:Set, edgeSet:Set(of resEdge refs)} for the focused node
+  if(!node) return null;
+  const ns=new Set([node.i]); const es=new Set();
+  resEdges.forEach(e=>{
+    if(e.a===node.i||e.b===node.i){ es.add(e); ns.add(e.a); ns.add(e.b); }
+  });
+  return {ns,es};
+}
+
+/* ---- draw ---- */
+let t=0;
+function dimByFam(n){ return activeFam!=='all' && n.fam!==activeFam; }
+function draw(){
+  t+=0.016;
+  ctx.clearRect(0,0,W,H);
+  const focus = selNode || hoverNode;
+  const hl = activeSetFor(focus);
+
+  // soft central void-glow
+  const cg=center();
+  const grd=ctx.createRadialGradient(cg.x,cg.y,0,cg.x,cg.y,Math.max(W,H)*0.6);
+  grd.addColorStop(0,'rgba(201,162,75,0.045)');
+  grd.addColorStop(0.5,'rgba(201,162,75,0.012)');
+  grd.addColorStop(1,'rgba(5,6,8,0)');
+  ctx.fillStyle=grd; ctx.fillRect(0,0,W,H);
+
+  // 1) faint family links
+  ctx.lineWidth=1;
+  famLinks.forEach(([ai,bi])=>{
+    const a=nodes[ai],b=nodes[bi];
+    let op=0.05;
+    if(activeFam!=='all'){ op = (a.fam===activeFam&&b.fam===activeFam)?0.13:0.012; }
+    if(hl){ op = (hl.ns.has(ai)&&hl.ns.has(bi))?op:0.012; }
+    ctx.strokeStyle=`rgba(201,162,75,${op})`;
+    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+  });
+
+  // 2) resonance threads — the stars of the show: luminous gold
+  resEdges.forEach(e=>{
+    const a=nodes[e.a],b=nodes[e.b];
+    const famDim = dimByFam(a)&&dimByFam(b);
+    let strong = hl ? hl.es.has(e) : false;
+    let baseOp = hl ? (strong?0.92:0.06) : (famDim?0.07:0.34);
+    if(!hl && activeFam!=='all' && !famDim) baseOp=0.5;
+    // shimmer travelling along the thread
+    const mx=(a.x+b.x)/2, my=(a.y+b.y)/2;
+    const len=Math.hypot(b.x-a.x,b.y-a.y);
+    const lg=ctx.createLinearGradient(a.x,a.y,b.x,b.y);
+    const pulse = reduceMotion?0:0.5+0.5*Math.sin(t*1.4 + e.ri*0.7);
+    const mid = strong? (0.55+0.4*pulse) : baseOp;
+    lg.addColorStop(0,`rgba(216,185,115,${baseOp})`);
+    lg.addColorStop(0.5,`rgba(230,196,119,${mid})`);
+    lg.addColorStop(1,`rgba(216,185,115,${baseOp})`);
+    ctx.strokeStyle=lg;
+    ctx.lineWidth = strong?1.9:(hl?0.7:1.1);
+    if(strong){ctx.shadowColor='rgba(230,196,119,0.7)';ctx.shadowBlur=8;} else {ctx.shadowBlur=0;}
+    // a slight curve so threads read as light, not wire
+    const nx=-(b.y-a.y)/(len||1), ny=(b.x-a.x)/(len||1);
+    const bow=Math.min(len*0.12,22);
+    ctx.beginPath();
+    ctx.moveTo(a.x,a.y);
+    ctx.quadraticCurveTo(mx+nx*bow,my+ny*bow,b.x,b.y);
+    ctx.stroke();
+  });
+  ctx.shadowBlur=0;
+
+  // 3) nodes — points of worked-gold light, tinted by family color
+  nodes.forEach(n=>{
+    let dim = dimByFam(n);
+    if(hl) dim = !hl.ns.has(n.i);
+    const focused = focus===n;
+    // ease glow
+    const target = focused?1 : (hl&&hl.ns.has(n.i)?0.55:0);
+    n.glow += (target-n.glow)*0.18;
+    const col = FAM[n.fam].c;
+    const baseA = dim?0.16:0.92;
+    const r=n.radius*(focused?1.5:1+n.glow*0.25);
+    // outer halo (light-as-geometry: glow first, dot second)
+    const haloA = dim?0.0 : (0.16+n.glow*0.5);
+    if(haloA>0.01){
+      const hg=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,r*5.5);
+      hg.addColorStop(0,hexA(col,haloA));
+      hg.addColorStop(1,hexA(col,0));
+      ctx.fillStyle=hg;
+      ctx.beginPath();ctx.arc(n.x,n.y,r*5.5,0,Math.PI*2);ctx.fill();
+    }
+    // the worked-gold core: warm-white center, family-color rim
+    ctx.beginPath();ctx.arc(n.x,n.y,r,0,Math.PI*2);
+    const cg2=ctx.createRadialGradient(n.x-r*0.3,n.y-r*0.3,0,n.x,n.y,r);
+    cg2.addColorStop(0,hexA('#fff5dd',baseA));
+    cg2.addColorStop(0.5,hexA(col,baseA));
+    cg2.addColorStop(1,hexA(col,baseA*0.7));
+    ctx.fillStyle=cg2; ctx.fill();
+    if(focused){ ctx.lineWidth=1; ctx.strokeStyle='rgba(255,245,221,0.85)'; ctx.stroke(); }
+  });
+
+  // 4) label for the focused node, drawn on canvas (panel holds the full story)
+  if(focus){
+    const n=focus;
+    ctx.font='500 13px "Cormorant Garamond", Georgia, serif';
+    const txt=n.name;
+    const tw=ctx.measureText(txt).width;
+    let lx=n.x+n.radius+10, ly=n.y+4;
+    if(lx+tw>W-8) lx=n.x-n.radius-10-tw;
+    ctx.fillStyle='rgba(5,6,8,0.7)';
+    ctx.fillRect(lx-5,ly-13,tw+10,18);
+    ctx.fillStyle='#efe8de';
+    ctx.fillText(txt,lx,ly);
+  }
+}
+function hexA(hex,a){
+  hex=hex.replace('#','');
+  if(hex.length===3)hex=hex.split('').map(x=>x+x).join('');
+  const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+/* ---- loop ---- */
+let settleFrames = reduceMotion?260:99999; // reduced-motion: settle then stop simulating
+let frame=0;
+function loop(){
+  if(frame<settleFrames || !reduceMotion) step();
+  draw();
+  frame++;
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+/* ============================================================
+   INTERACTION
+   ============================================================ */
+function nodeAt(mx,my){
+  let best=null,bd=Infinity;
+  for(const n of nodes){
+    const d=Math.hypot(n.x-mx,n.y-my);
+    const hit=Math.max(n.radius+8,14);
+    if(d<hit && d<bd){ if(activeFam==='all'||n.fam===activeFam){bd=d;best=n;} }
+  }
+  return best;
+}
+function evPos(e){
+  const r=cv.getBoundingClientRect();
+  const p=e.touches?e.touches[0]:e;
+  return {x:p.clientX-r.left, y:p.clientY-r.top};
+}
+const hintEl=document.getElementById('hint');
+function killHint(){ hintEl.classList.add('gone'); }
+
+cv.addEventListener('mousemove',e=>{
+  if(drag){ const p=evPos(e); drag.tx=p.x; drag.ty=p.y; dragMoved=true; alpha=Math.max(alpha,0.5); return; }
+  const p=evPos(e); const n=nodeAt(p.x,p.y);
+  hoverNode=n; cv.style.cursor=n?'pointer':'default';
+  if(n && !selNode) showPanel(n,false);
+  else if(!n && !selNode) hidePanel();
+});
+cv.addEventListener('mousedown',e=>{
+  const p=evPos(e); const n=nodeAt(p.x,p.y);
+  if(n){ drag=n; drag.tx=p.x; drag.ty=p.y; dragMoved=false; }
+});
+window.addEventListener('mouseup',e=>{
+  if(drag){
+    if(!dragMoved){ selNode=drag; showPanel(drag,true); killHint(); }
+    drag=null;
+  }
+});
+// touch
+cv.addEventListener('touchstart',e=>{
+  const p=evPos(e); const n=nodeAt(p.x,p.y);
+  if(n){ drag=n; drag.tx=p.x; drag.ty=p.y; dragMoved=false; }
+},{passive:true});
+cv.addEventListener('touchmove',e=>{
+  if(drag){ const p=evPos(e); drag.tx=p.x; drag.ty=p.y; dragMoved=true; alpha=Math.max(alpha,0.5);
+    e.preventDefault(); }
+},{passive:false});
+cv.addEventListener('touchend',e=>{
+  if(drag){
+    if(!dragMoved){ selNode=drag; hoverNode=drag; showPanel(drag,true); killHint(); }
+    drag=null;
+  }
+});
+
+/* keyboard: tab into canvas, arrow through nodes, enter selects */
+let kbIdx=-1;
+cv.setAttribute('tabindex','0');
+cv.addEventListener('keydown',e=>{
+  if(['ArrowRight','ArrowDown','ArrowLeft','ArrowUp'].includes(e.key)){
+    e.preventDefault();
+    const pool=nodes.filter(n=>activeFam==='all'||n.fam===activeFam);
+    if(!pool.length)return;
+    const dir=(e.key==='ArrowRight'||e.key==='ArrowDown')?1:-1;
+    let cur=pool.findIndex(n=>n===selNode);
+    cur=(cur+dir+pool.length)%pool.length;
+    if(cur<0)cur=0;
+    selNode=pool[cur]; hoverNode=selNode; showPanel(selNode,true); killHint();
+  } else if(e.key==='Enter'||e.key===' '){
+    if(hoverNode){e.preventDefault(); selNode=hoverNode; showPanel(selNode,true);}
+  } else if(e.key==='Escape'){
+    selNode=null; hidePanel();
+  }
+});
+
+/* ---- detail panel ---- */
+const panel=document.getElementById('panel');
+const pdot=document.getElementById('pdot'),pfam=document.getElementById('pfam'),
+      pname=document.getElementById('pname'),pstory=document.getElementById('pstory'),
+      pres=document.getElementById('pres'),plist=document.getElementById('plist');
+function showPanel(n,sticky){
+  pdot.style.background=FAM[n.fam].c;
+  pfam.textContent=FAM[n.fam].label; pfam.style.color=FAM[n.fam].c;
+  pname.textContent=n.name;
+  pstory.textContent=n.story.charAt(0).toUpperCase()+n.story.slice(1);
+  // resonances this node belongs to
+  const rs=nodeRes[n.i];
+  plist.innerHTML='';
+  if(rs.length){
+    pres.hidden=false;
+    rs.forEach(ri=>{
+      const r=RES[ri];
+      const btn=document.createElement('button');
+      btn.className='rlink'; btn.textContent=r.t;
+      const mean=document.createElement('div');
+      mean.className='pmeaning'; mean.textContent=r.m; mean.hidden=true;
+      btn.addEventListener('click',ev=>{ev.stopPropagation(); mean.hidden=!mean.hidden;});
+      plist.appendChild(btn); plist.appendChild(mean);
+    });
+  } else { pres.hidden=true; }
+  panel.classList.add('show');
+}
+function hidePanel(){ panel.classList.remove('show'); }
+document.getElementById('pclose').addEventListener('click',()=>{selNode=null;hoverNode=null;hidePanel();});
+
+/* ---- filters ---- */
+const fwrap=document.getElementById('filters');
+function addFBtn(key,label,color){
+  const b=document.createElement('button');
+  b.className='fbtn'+(key==='all'?' on':''); b.dataset.f=key;
+  b.setAttribute('aria-pressed',key==='all'?'true':'false');
+  if(color){const s=document.createElement('span');s.className='dot';s.style.background=color;b.appendChild(s);}
+  b.appendChild(document.createTextNode(label));
+  fwrap.appendChild(b);
+}
+addFBtn('all','all 94 objects');
+Object.entries(FAM).forEach(([k,v])=>addFBtn(k,v.label,v.c));
+fwrap.addEventListener('click',e=>{
+  const b=e.target.closest('.fbtn'); if(!b)return;
+  activeFam=b.dataset.f;
+  document.querySelectorAll('.fbtn').forEach(x=>{const on=x.dataset.f===activeFam;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on?'true':'false');});
+  if(selNode && activeFam!=='all' && selNode.fam!==activeFam){ selNode=null; hidePanel(); }
+  alpha=Math.max(alpha,0.4); // re-energize a touch
+});
+
+/* ---- counts footnote ---- */
+document.getElementById('counts').innerHTML =
+  `<b>${ITEMS.length}</b> objects · <b>${Object.keys(FAM).length}</b> vibe-families`;
+
+/* ---- accessible summary list ---- */
+const sumList=document.getElementById('summary-list');
+RES.forEach(r=>{
+  const li=document.createElement('li');
+  const names=r.n.join(', ');
+  li.textContent=`${r.t}: ${r.m} (objects: ${names}).`;
+  sumList.appendChild(li);
+});
+</script>
+</body>
+</html>
